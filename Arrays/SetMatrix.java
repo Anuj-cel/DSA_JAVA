@@ -100,4 +100,66 @@ class Solution {
 // tc: O(N*M)
 // sc: O(1)
 // algo: Use the first row and first column to mark which rows and columns should be set to zero.
-// take care of the first row and first column separately to avoid overwriting them during marking. 
+// take care of the first row and first column separately to avoid overwriting them during marking.
+
+other approach: rowAffected and columnAffected
+class Solution {
+    public void setMatrixZeroes(int[][] mat) {
+        int rows = mat.length;
+        int cols = mat[0].length;
+        
+        boolean rowAffected = false;
+        boolean colAffected = false;
+
+        // Check if first row should be zero
+        for (int j = 0; j < cols; j++) {
+            if (mat[0][j] == 0) {
+                rowAffected = true;
+                break;
+            }
+        }
+
+        // Check if first column should be zero
+        for (int i = 0; i < rows; i++) {
+            if (mat[i][0] == 0) {
+                colAffected = true;
+                break;
+            }
+        }
+
+        // Mark rows and columns
+        for (int i = 1; i < rows; i++) {
+            for (int j = 1; j < cols; j++) {
+                if (mat[i][j] == 0) {
+                    mat[i][0] = 0;
+                    mat[0][j] = 0;
+                }
+            }
+        }
+
+        // Apply zeroes based on marks
+        for (int i = 1; i < rows; i++) {
+            for (int j = 1; j < cols; j++) {
+                if (mat[i][0] == 0 || mat[0][j] == 0) {
+                    mat[i][j] = 0;
+                }
+            }
+        }
+
+        // Zero the first row if needed
+        if (rowAffected) {
+            for (int j = 0; j < cols; j++) {
+                mat[0][j] = 0;
+            }
+        }
+
+        // Zero the first column if needed
+        if (colAffected) {
+            for (int i = 0; i < rows; i++) {
+                mat[i][0] = 0;
+            }
+        }
+    }
+}
+// tc: O(N*M)
+// sc: O(1)
